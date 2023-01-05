@@ -3,6 +3,9 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useState } from "react";
 import { getTodos, addTodo, updateTodo, deleteTodo } from "../../api/todosApi";
 
+//useMutation 은 React Query 를 이용해 서버에 데이터 변경 작업(C,U,D)을 요청할 때 사용.
+//데이터 조회(R)시에는 -> useQuery
+
 const TodoList = () => {
   const [newTodo, setNewTodo] = useState("");
   const queryClient = useQueryClient();
@@ -21,6 +24,8 @@ const TodoList = () => {
       queryClient.invalidateQueries("todos");
     },
   });
+  //invalidateQueries는 useQuery에서 사용되는 queryKey의 유효성을 제거해주는 목적으로 사용됩니다.
+  //queryKey의 유효성을 제거해주는 이유는 서버로부터 다시 데이터를 조회해오기 위함
 
   const updateTodoMutation = useMutation(updateTodo, {
     onSuccess: () => {
@@ -33,6 +38,9 @@ const TodoList = () => {
       queryClient.invalidateQueries("todos");
     },
   });
+
+  //mutate는 useMutation을 이용해 작성한 내용들이 실행될 수 있도록 도와주는 trigger 역할을 합니다.
+  //-> useMutation을 정의 해둔 뒤 이벤트가 발생되었을 때 mutate를 사용
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -92,7 +100,7 @@ const TodoList = () => {
 
   return (
     <main>
-      <h1>TOdo List</h1>
+      <h1>TODOLIST react_qurey</h1>
       {newItemSection}
       {content}
     </main>
